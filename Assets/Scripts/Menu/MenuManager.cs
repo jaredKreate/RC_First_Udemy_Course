@@ -31,6 +31,7 @@ public class MenuManager : MonoBehaviour {
     //Unity calls this function for us
     void Start()
     {
+        RenderedPages = new List<Page>();
         StartCoroutine("UpdateMenu", 0.25f); //Update the menu every quarter second.
     }
 
@@ -55,6 +56,11 @@ public class MenuManager : MonoBehaviour {
             {
                 //We need to add the page to our game
                 GameObject newPage = Instantiate(Menu[i].gameObject) as GameObject;
+                RectTransform rect = newPage.GetComponent<RectTransform>();
+                rect.SetParent(transform);
+                rect.offsetMax = Vector2.zero;
+                rect.offsetMin = Vector2.zero;
+                rect.localScale = Vector2.one;
                 break; //get out of the loop - no need to look any further when we find the page that needs to be added.
             }
         }
