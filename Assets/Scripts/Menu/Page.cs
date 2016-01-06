@@ -25,6 +25,19 @@ public class Page : MonoBehaviour {
     /// </summary>
     public void Exit()
     {
-        
+        anim.SetBool("Exit", true);
+        StartCoroutine("AnimateOut", 0.01f);
+    }
+
+    IEnumerator AnimateOut(float updateTime)
+    {
+        while (true)
+        {
+            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !anim.IsInTransition(0))
+            {
+                active = false;
+            }
+            yield return new WaitForSeconds(updateTime);
+        }
     }
 }

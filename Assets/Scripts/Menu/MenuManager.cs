@@ -11,8 +11,9 @@ public class MenuManager : MonoBehaviour {
     public static MenuManager Instance; //there can only be one instance of a menu manager in the game
 
     public Page[] Menu; //A collection of all of our menu pages.
+    public string entry ="Enter Entry Page ID Here";
 
-    List<Page> RenderedPages; //A collection of the menu pages currently loaded. 
+    public List<Page> RenderedPages; //A collection of the menu pages currently loaded. 
 
     //Unity calls this function for us (before Start())
     void Awake()
@@ -25,14 +26,10 @@ public class MenuManager : MonoBehaviour {
         {
             Instance = this; //We need to initialize the Instance variable
             DontDestroyOnLoad(gameObject); //Call this unity function to save an data transferring from scene to scene
+            RenderedPages = new List<Page>();
+            AddPage(entry);
+            StartCoroutine("UpdateMenu", 0.25f); //Update the menu every quarter second.
         }
-    }
-
-    //Unity calls this function for us
-    void Start()
-    {
-        RenderedPages = new List<Page>();
-        StartCoroutine("UpdateMenu", 0.25f); //Update the menu every quarter second.
     }
 
     IEnumerator UpdateMenu(float update_time)
@@ -61,6 +58,9 @@ public class MenuManager : MonoBehaviour {
                 rect.offsetMax = Vector2.zero;
                 rect.offsetMin = Vector2.zero;
                 rect.localScale = Vector2.one;
+                Page p = newPage.GetComponent<Page>();
+                RenderedPages.Add(p);
+                Debug.Log("Adding "+pageID);
                 break; //get out of the loop - no need to look any further when we find the page that needs to be added.
             }
         }
@@ -93,9 +93,23 @@ public class MenuManager : MonoBehaviour {
         {
             if (RenderedPages[i].Active == false)
             {
-                Destroy(RenderedPages[i]); //Remove the page from the game.
+                Debug.Log("Removing "+RenderedPages[i].pageID);
+                Destroy(RenderedPages[i].gameObject); //Remove the page game object from the game.
                 RenderedPages.RemoveAt(i); //Remove the page reference from the list.
             }
+        }
+    }
+
+    /// <summary>
+    /// Removes all pages currently active. 
+    /// This will likely only be used when switching scenes.
+    /// </summary>
+    public void RemoveAllPages()
+    {
+        for (int i = 0; i < RenderedPages.Count; i++)
+        {
+            //We need to tell this page to run its exit function
+            RenderedPages[i].Exit();
         }
     }
 }
