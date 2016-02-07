@@ -20,6 +20,8 @@ public class FPSCamera : MonoBehaviour {
 	//Input parameters
 	float vertical; //input for looking up and down;
 
+    bool cursorToggle = false;
+
 	void Start()
 	{
 		Cursor.visible = false;
@@ -30,6 +32,11 @@ public class FPSCamera : MonoBehaviour {
 	void GetInput()
 	{
 		vertical = Input.GetAxis("Mouse Y");
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            cursorToggle = !cursorToggle;
+            Cursor.visible = cursorToggle;
+        }
 	}
 
 	void FixedUpdate()

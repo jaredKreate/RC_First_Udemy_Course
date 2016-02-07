@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour {
 	public float jumpSpeed = 10;
 	public float gravity = 0.25f;
 	public float distanceToGrounded = 0.52f;
-	public Transform[] groundCheckPoints;
+	public Transform capsuleTop, capsuleBottom;
+    public float capsuleRadius;
 	public LayerMask groundLayer;
 
 	//Helper parameters
@@ -23,14 +24,9 @@ public class PlayerController : MonoBehaviour {
 
 	bool Grounded()
 	{
-		foreach(Transform t in groundCheckPoints)
-		{
-			if (Physics.Raycast(t.position, Vector3.down, distanceToGrounded, groundLayer))
-			{
-				return true;
-			}
-		}
-		return false;
+        if (Physics.CheckCapsule(capsuleTop.position, capsuleBottom.position, capsuleRadius))
+            return true;
+        return false;
 	}
 
 	public Quaternion GetRotation()
