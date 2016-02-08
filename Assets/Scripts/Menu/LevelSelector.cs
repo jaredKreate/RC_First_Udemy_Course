@@ -50,6 +50,7 @@ public class LevelSelector : MonoBehaviour {
     {
         menu.RemoveAllPages();
         SceneManager.LoadScene(level);
+        menu.AddPage("hud");
     }
 
 }
