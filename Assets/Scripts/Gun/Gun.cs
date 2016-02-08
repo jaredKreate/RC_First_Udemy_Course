@@ -11,6 +11,7 @@ public class Gun : MonoBehaviour {
     public float firingSpeed = 0.2f;
     public float aimDistance = 10;
     public float accuracyDeviation = 1;
+    public int ammoPerShot = 1;
 
     Vector3 aimDirection = Vector3.zero; //direction for the bullet to travel on
     Vector3 aimDeviation = Vector3.zero; //additional deviation to be added to aimDirection based on accuracyDeviation
@@ -58,7 +59,7 @@ public class Gun : MonoBehaviour {
         aimDeviation.y = Random.Range(-accuracyDeviation, accuracyDeviation);
         return aimDeviation;
     }
-
+    
     /// <summary>
     /// Called when fireInput is active. 
     /// Will spawn a bullet and set the bullets path direction.
@@ -66,10 +67,11 @@ public class Gun : MonoBehaviour {
     /// </summary>
     void Shoot()
     {
-        if (fireTimer >= firingSpeed)
+        if (fireTimer >= firingSpeed && PlayerData.Instance.ammo > 0)
         {
             GameObject bullet = Instantiate(Bullet, bulletSpawn.position, Quaternion.identity) as GameObject;
             bullet.transform.rotation = Quaternion.LookRotation(GetAimDirection());
+            PlayerData.Instance.ModifyAmmo(-ammoPerShot); //subtract from ammo;
             fireTimer = 0;
         }
     }
