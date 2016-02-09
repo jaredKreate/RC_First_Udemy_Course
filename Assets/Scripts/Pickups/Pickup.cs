@@ -5,13 +5,14 @@ public class Pickup : MonoBehaviour {
 
     public enum PickUpType { Health, Ammo }
     public PickUpType pickupType;
-    
+    public int reward = 10;
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag.Equals("pickup"))
+        if (col.tag.Equals("Player"))
         {
             GetObject();
+            Destroy(gameObject);
         }
     }
 
@@ -19,8 +20,8 @@ public class Pickup : MonoBehaviour {
     {
         switch (pickupType)
         {
-            case PickUpType.Ammo: break;
-            case PickUpType.Health: break;
+            case PickUpType.Ammo: PlayerData.Instance.ModifyAmmo(reward); break;
+            case PickUpType.Health: PlayerData.Instance.ModifyHealth(reward); break;
         }
     }
 }

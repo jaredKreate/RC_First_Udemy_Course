@@ -28,14 +28,17 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        for (int i = 0; i < 3; i++)
+        if (!col.tag.Equals("Pickup"))
         {
-            GameObject go = Instantiate(Debris, transform.position, Quaternion.identity)as GameObject;
-            Material hitMat = col.GetComponent<MeshRenderer>().material;
-            Material debrisMat = go.GetComponent<MeshRenderer>().material;
-            debrisMat.color = hitMat.color;
+            for (int i = 0; i < 3; i++)
+            {
+                GameObject go = Instantiate(Debris, transform.position, Quaternion.identity) as GameObject;
+                Material hitMat = col.GetComponent<MeshRenderer>().material;
+                Material debrisMat = go.GetComponent<MeshRenderer>().material;
+                debrisMat.color = hitMat.color;
+            }
+            SetIndicators();
+            Destroy(gameObject);
         }
-        SetIndicators();
-        Destroy(gameObject);
     }
 }
