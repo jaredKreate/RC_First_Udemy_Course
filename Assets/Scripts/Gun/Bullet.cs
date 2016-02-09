@@ -42,7 +42,6 @@ public class Bullet : MonoBehaviour {
                 Material debrisMat = go.GetComponent<MeshRenderer>().material;
                 debrisMat.color = hitMat.color;
             }
-            SetIndicators();
             Destroy(gameObject);
         }
         else if (col.tag.Equals("Enemy"))
@@ -50,6 +49,9 @@ public class Bullet : MonoBehaviour {
             EnemyData enemyData = col.GetComponent<EnemyData>();
             enemyData.ModifyHealth(-Random.Range(damage.min, damage.max));
             ActivateTarget(enemyData);
+            SetIndicators();
+            Destroy(gameObject);
         }
+        
     }
 }

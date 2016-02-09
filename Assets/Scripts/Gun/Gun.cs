@@ -8,6 +8,8 @@ public class Gun : MonoBehaviour {
 
     public Transform bulletSpawn;
     public GameObject Bullet;
+    public float zoomFoV = 25;
+    public float normalFoV = 60;
     public float firingSpeed = 0.2f;
     public float aimDistance = 10;
     public float accuracyDeviation = 1;
@@ -18,6 +20,8 @@ public class Gun : MonoBehaviour {
     Vector3 aimPosition = Vector3.zero; //target aim position relative to the camera angle based on aimDistance
     float fireInput = 0;
     float fireTimer = 0;
+    bool aiming = false;
+    float targetFoV = 60;
 
     RaycastHit hitInfo; //will be used to detect if an object comes in our sights
 
@@ -27,6 +31,14 @@ public class Gun : MonoBehaviour {
     void GetInput()
     {
         fireInput = Input.GetAxis("Fire1");
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            aiming = !aiming;
+            if (aiming)
+                targetFoV = zoomFoV;
+            else
+                targetFoV = normalFoV;
+        }
     }
 
     /// <summary>
@@ -76,6 +88,11 @@ public class Gun : MonoBehaviour {
         }
     }
 
+    void UpdateFoV()
+    {
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, targetFoV, 10 * Time.deltaTime);
+    }
+
     void Update()
     {
         /*aimPosition = Camera.main.transform.position + Camera.main.transform.forward * aimDistance;
@@ -84,6 +101,7 @@ public class Gun : MonoBehaviour {
         Debug.DrawRay(bulletSpawn.position, aimDirection, Color.blue);*/
 
         GetInput();
+        UpdateFoV();
         if (fireTimer < firingSpeed)
             fireTimer += Time.deltaTime;
         if (fireInput > 0)
