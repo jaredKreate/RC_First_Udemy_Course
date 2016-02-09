@@ -22,15 +22,20 @@ public class Bullet : MonoBehaviour {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
+
+    public delegate void HitIndicatorDelegate();
+    public static event HitIndicatorDelegate SetIndicators;
+
     void OnTriggerEnter(Collider col)
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
             GameObject go = Instantiate(Debris, transform.position, Quaternion.identity)as GameObject;
             Material hitMat = col.GetComponent<MeshRenderer>().material;
             Material debrisMat = go.GetComponent<MeshRenderer>().material;
             debrisMat.color = hitMat.color;
         }
+        SetIndicators();
         Destroy(gameObject);
     }
 }

@@ -10,6 +10,8 @@ public class Debris : MonoBehaviour {
     Rigidbody rBody;
     float lifeTimer = 0;
 
+    float b;
+
 	void Start () {
         rBody = GetComponent<Rigidbody>();
         rBody.AddForce(new Vector3(Random.Range(-maxForce, maxForce), Random.Range(0, maxForce), Random.Range(-maxForce, maxForce)));
