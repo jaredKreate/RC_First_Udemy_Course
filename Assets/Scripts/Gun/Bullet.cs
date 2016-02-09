@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (!col.tag.Equals("Pickup"))
+        if (!col.tag.Equals("Pickup") && !col.tag.Equals("Player"))
         {
             for (int i = 0; i < 3; i++)
             {
