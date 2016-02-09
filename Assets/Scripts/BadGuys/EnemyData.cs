@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
+using System.Collections;
 
-public class PlayerData : MonoBehaviour {
+public class EnemyData : MonoBehaviour {
 
-    public static PlayerData Instance;
-
-    public int health = 100;
+    public string name = "Enemy";
     public int maxHealth = 100;
+    public int health = 100;
     public int healDelta = 1;
     public float healRate = 0.5f;
     public int maxClips = 4;
@@ -24,6 +24,8 @@ public class PlayerData : MonoBehaviour {
         if (health < 0)
         {
             health = 0;
+            alive = false;
+            Destroy(gameObject);
         }
     }
 
@@ -55,24 +57,6 @@ public class PlayerData : MonoBehaviour {
         }
     }
 
-    void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
-    void Update()
-    {
-        HealOverTime();
-    }
-
     void HealOverTime()
     {
         healTimer += Time.deltaTime;
@@ -81,5 +65,10 @@ public class PlayerData : MonoBehaviour {
             ModifyHealth(healDelta);
             healTimer = 0;
         }
+    }
+
+    void Update()
+    {
+        HealOverTime();
     }
 }
