@@ -14,6 +14,7 @@ public class Gun : MonoBehaviour {
     public float aimDistance = 10;
     public float accuracyDeviation = 1;
     public int ammoPerShot = 1;
+    public MuzzleFlash muzzleFlash;
 
     Vector3 aimDirection = Vector3.zero; //direction for the bullet to travel on
     Vector3 aimDeviation = Vector3.zero; //additional deviation to be added to aimDirection based on accuracyDeviation
@@ -84,6 +85,7 @@ public class Gun : MonoBehaviour {
             GameObject bullet = Instantiate(Bullet, bulletSpawn.position, Quaternion.identity) as GameObject;
             bullet.transform.rotation = Quaternion.LookRotation(GetAimDirection());
             PlayerData.Instance.ModifyAmmo(-ammoPerShot); //subtract from ammo;
+            muzzleFlash.Flash();
             fireTimer = 0;
         }
     }

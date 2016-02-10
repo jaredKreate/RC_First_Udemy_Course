@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+//© 2016 RENAISSANCE CODERS ALL RIGHTS RESERVED
+
 /// <summary>
 /// A class that is responsible for the management of our game's User Interface elements.
 /// The MenuManager should be able to add or remove pages to the game view.

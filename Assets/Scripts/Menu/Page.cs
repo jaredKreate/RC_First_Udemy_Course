@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//© 2016 RENAISSANCE CODERS ALL RIGHTS RESERVED
+
 /// <summary>
 /// This class is responsible for handling entrance and exit strategies for our pages.
 /// This class will be attached to each "physical" page game object.
@@ -29,6 +31,11 @@ public class Page : MonoBehaviour {
         StartCoroutine("AnimateOut", 0.01f);
     }
 
+    /// <summary>
+    /// This IEnumerator will run while the exit animation is still in progress.
+    /// </summary>
+    /// <param name="updateTime"></param>
+    /// <returns></returns>
     IEnumerator AnimateOut(float updateTime)
     {
         while (true)

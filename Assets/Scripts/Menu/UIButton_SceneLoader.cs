@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
+//© 2016 RENAISSANCE CODERS ALL RIGHTS RESERVED
+
 /// <summary>
 /// The UIButton_SceneLoader class is responsible for receiving click events to load our game scenes.
 /// It implements the IPointerClick interface.
@@ -28,5 +30,6 @@ public class UIButton_SceneLoader : MonoBehaviour, IPointerClickHandler {
     {
         SceneManager.LoadScene(sceneID);
         menu.RemoveAllPages();
+        //optionally, you may add a hud page at this point
     }
 }

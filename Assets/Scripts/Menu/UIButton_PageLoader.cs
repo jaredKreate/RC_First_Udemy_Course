@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
+//© 2016 RENAISSANCE CODERS ALL RIGHTS RESERVED
+
 /// <summary>
 /// The UIButton_PageLoader class is responsible for receiving click events to inform the Menu Manager which page to load.
 /// It implements the IPointerClick interface.
