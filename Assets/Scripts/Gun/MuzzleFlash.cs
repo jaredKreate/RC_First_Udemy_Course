@@ -41,7 +41,7 @@ public class MuzzleFlash : MonoBehaviour {
 
     public void Flash()
     {
-        matColor.a = 1;
+        matColor.a = 0.5f;
         lightIntensity = maxIntensity;
     }
 }
