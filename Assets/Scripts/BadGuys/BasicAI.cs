@@ -45,6 +45,18 @@ public class BasicAI : MonoBehaviour {
 			case State.CHASE:
 				Chase ();
 				break;
+			case State.ATTACK:
+				Attack ();
+				break;
+			case State.EVADE:
+				Evade ();
+				break;
+			case State.GETAMMO:
+				GetAmmo ();
+				break;
+			case State.GETHEALTH:
+				GetHealth ();
+				break;
 			}
 			yield return null;
 		}
@@ -56,6 +68,26 @@ public class BasicAI : MonoBehaviour {
 	}
 
 	public void Chase()
+	{
+		
+	}
+
+	public void Attack()
+	{
+		
+	}
+
+	public void Evade()
+	{
+		
+	}
+
+	public void GetAmmo()
+	{
+		
+	}
+
+	public void GetHealth()
 	{
 		
 	}
