@@ -20,9 +20,14 @@ public class PlayerController : MonoBehaviour {
 	Quaternion targetRotation;
 
 	//Input parameters
-	float forward, turn, strafe, jump;
+	float forward, turn, strafe, jump, walk;
 
-	bool Grounded()
+    public float ForwardInput { get { return forward; } }
+    public float TurnInput { get { return turn; } }
+    public float StrafeInput { get { return strafe; } }
+    public float WalkInput { get { return walk; } }
+
+	public bool Grounded()
 	{
         if (Physics.CheckCapsule(capsuleTop.position, capsuleBottom.position, capsuleRadius))
             return true;
@@ -45,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 		turn = Input.GetAxis("Mouse X");
 		strafe = Input.GetAxis("Horizontal");
 		jump = Input.GetAxis("Jump");
+        walk = Input.GetAxis("Walk");
 	}
 	
 	public void UpdateController()
@@ -62,7 +68,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		if (Mathf.Abs(forward) > 0.1f)
 		{
-			velocity.z = forward * forwardSpeed;
+			velocity.z = forward * forwardSpeed * (walk > 0 ? 0.2f : 1);
 		}
 		else
 		{
@@ -77,7 +83,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		if (Mathf.Abs(strafe) > 0.1f)
 		{
-			velocity.x = strafe * strafeSpeed;
+			velocity.x = strafe * strafeSpeed * (walk > 0 ? 0.2f : 1);
 		}
 		else
 		{
