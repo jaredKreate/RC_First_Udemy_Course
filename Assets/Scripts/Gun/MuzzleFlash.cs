@@ -18,7 +18,7 @@ public class MuzzleFlash : MonoBehaviour {
         matColor = mat.color;
         matColor.a = 0;
         mat.color = matColor;
-
+      
         light = GetComponent<Light>();
         lightIntensity = light.intensity;
         lightIntensity = 0;
