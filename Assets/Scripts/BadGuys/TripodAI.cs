@@ -3,14 +3,20 @@ using System.Collections;
 
 public class TripodAI : MonoBehaviour {
 
-	// This variable will contain our nav mesh agent which stores a lot of our movement data
-	public NavMeshAgent agent;
-	// This variable will store a reference to our animator
-	public Animator myAnim;
-	// This variable will store a reference to our sight script
-	public EnemySight mySight;
-	// This variable will store a reference to our Character Controller
-	public CharacterController mycontroller;
+	[System.Serializable]
+	public class Components
+	{
+		// This variable will contain our nav mesh agent which stores a lot of our movement data
+		public NavMeshAgent agent;
+		// This variable will store a reference to our animator
+		public Animator myAnim;
+		// This variable will store a reference to our sight script
+		public EnemySight mySight;
+		// This variable will store a reference to our Character Controller
+		public CharacterController mycontroller;	
+	}
+
+	public Components components;
 
 	// This state represents the states that the AI character can actively be in
 	public enum State {
@@ -30,20 +36,28 @@ public class TripodAI : MonoBehaviour {
 	private bool alive;
 
 	// We will need these if the AI needs to be patrolling
-	public bool amIOnPatrol;
-	public GameObject[] waypoints;
-	private int waypointInd;
-	public float patrolSpeed = 0.5f;
+	[System.Serializable]
+	public class Patrolling
+	{		
+		public bool amIOnPatrol;
+		public GameObject[] waypoints;
+		private int waypointInd;
+		public float patrolSpeed = 0.5f;
+	}
+
+	public Patrolling patrolling;
 
 	// Use this for initialization
 	void Start () {
-		agent = GetComponent<NavMeshAgent>();
-		myAnim = GetComponent<Animator>();
-		if (mySight == null)
+		components.agent = GetComponent<NavMeshAgent>();
+		components.myAnim = GetComponent<Animator>();
+		if (components.mySight == null)
 		{
-			mySight = GetComponentInChildren<EnemySight>();
+			components.mySight = GetComponentInChildren<EnemySight>();
 		}
-		mycontroller = GetComponent<CharacterController>();
+		components.mycontroller = GetComponent<CharacterController>();
+		alive = true;
+		state = TripodAI.State.IDLE;
 	}
 
 	// This is our Finite State machine which will run continuously until the AI character has been eliminated
