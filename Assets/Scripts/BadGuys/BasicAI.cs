@@ -6,6 +6,7 @@ public class BasicAI : MonoBehaviour {
 	// This variable will contain our nav mesh agent which stores a lot of our movement data
 	public NavMeshAgent agent;
 	public Animator myAnim;
+	public EnemySight mySight;
 
 	// This state represents the states that the AI character can actively be in
 	public enum State {
@@ -32,6 +33,10 @@ public class BasicAI : MonoBehaviour {
 	void Start () {
 		agent = GetComponent<NavMeshAgent>();
 		myAnim = GetComponent<Animator>();
+		if (EnemySight == null)
+		{
+			mySight = GetComponentInChildren<EnemySight>();
+		}
 	}
 
 	// This is our Finite State machine which will run continuously
