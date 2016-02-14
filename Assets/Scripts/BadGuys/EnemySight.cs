@@ -11,25 +11,25 @@ public class EnemySight : MonoBehaviour {
 	void Update () {
 		if(!playerSighted)
 		{					
-			Debug.DrawRay(transform.position + Vector3.up * heightMultiplier, transform.forward * sightDist, Color.green);
-			Debug.DrawRay(transform.position + Vector3.up * heightMultiplier, (transform.forward + transform.right) * sightDist, Color.green);
-			Debug.DrawRay(transform.position + Vector3.up * heightMultiplier, (transform.forward - transform.right) * sightDist, Color.green);
+			Debug.DrawRay(transform.position + Vector3.up * heightMultiplier, -transform.up * sightDist, Color.green);
+			Debug.DrawRay(transform.position + Vector3.up * heightMultiplier, (-transform.up + transform.right) * sightDist, Color.green);
+			Debug.DrawRay(transform.position + Vector3.up * heightMultiplier, (-transform.up - transform.right) * sightDist, Color.green);
 			RaycastHit hit;
-			if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, transform.forward, out hit, sightDist))				
+			if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, -transform.up, out hit, sightDist))				
 			{
 				if(hit.collider.gameObject.tag == "Player")
 				{					
 					playerSighted = true;
 				}
 			}
-			if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, (transform.forward + transform.right), out hit, sightDist))				
+			if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, (-transform.up + transform.right), out hit, sightDist))				
 			{
 				if(hit.collider.gameObject.tag == "Player")
 				{					
 					playerSighted = true;
 				}
 			}
-			if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, (transform.forward - transform.right), out hit, sightDist))				
+			if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, (-transform.up - transform.right), out hit, sightDist))				
 			{
 				if(hit.collider.gameObject.tag == "Player")
 				{					

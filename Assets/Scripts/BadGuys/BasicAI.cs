@@ -5,7 +5,9 @@ public class BasicAI : MonoBehaviour {
 
 	// This variable will contain our nav mesh agent which stores a lot of our movement data
 	public NavMeshAgent agent;
+	// This variable will store a reference to our animator
 	public Animator myAnim;
+	// This variable will store a reference to our sight script
 	public EnemySight mySight;
 
 	// This state represents the states that the AI character can actively be in
@@ -116,7 +118,7 @@ public class BasicAI : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 	
 	}
 }
