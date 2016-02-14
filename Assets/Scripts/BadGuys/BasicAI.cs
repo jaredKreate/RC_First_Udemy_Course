@@ -40,6 +40,7 @@ public class BasicAI : MonoBehaviour {
 		{
 			mySight = GetComponentInChildren<EnemySight>();
 		}
+		alive = true;
 	}
 
 	// This is our Finite State machine which will run continuously
