@@ -5,6 +5,7 @@ public class BasicAI : MonoBehaviour {
 
 	// This variable will contain our nav mesh agent which stores a lot of our movement data
 	public NavMeshAgent agent;
+	public Animator myAnim;
 
 	// This state represents the states that the AI character can actively be in
 	public enum State {
@@ -30,6 +31,7 @@ public class BasicAI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		agent = GetComponent<NavMeshAgent>();
+		myAnim = GetComponent<Animator>();
 	}
 
 	// This is our Finite State machine which will run continuously
@@ -62,31 +64,37 @@ public class BasicAI : MonoBehaviour {
 		}
 	}
 
+	// Main Patrolling Method
 	public void Patrol()
 	{
 		
 	}
 
+	// Main Chase Method
 	public void Chase()
 	{
 		
 	}
 
+	// Main Attack Method
 	public void Attack()
 	{
 		
 	}
 
+	// Main Evade Method
 	public void Evade()
 	{
 		
 	}
 
+	// Main GetAmmo Method
 	public void GetAmmo()
 	{
 		
 	}
 
+	// Main GetHealth Method
 	public void GetHealth()
 	{
 		
