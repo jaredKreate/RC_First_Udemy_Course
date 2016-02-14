@@ -41,7 +41,7 @@ public class TripodAI : MonoBehaviour {
 	{		
 		public bool amIOnPatrol;
 		public GameObject[] waypoints;
-		private int waypointInd;
+		public int waypointInd;
 		public float patrolSpeed = 0.5f;
 	}
 
@@ -56,6 +56,7 @@ public class TripodAI : MonoBehaviour {
 			components.mySight = GetComponentInChildren<EnemySight>();
 		}
 		components.mycontroller = GetComponent<CharacterController>();
+		patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
 		alive = true;
 		state = TripodAI.State.IDLE;
 	}
@@ -96,13 +97,30 @@ public class TripodAI : MonoBehaviour {
 	// Main Idle Method
 	public void Idle()
 	{
-
+		// We shouldn't have to do anything here except check to see if we should be on patrol.
+		if(patrolling.amIOnPatrol)
+		{
+			state = TripodAI.State.PATROL;
+		}
 	}
 
 	// Main Patrolling Method
 	public void Patrol()
 	{
-
+		components.agent.speed = patrolling.patrolSpeed;
+		if (Vector3.Distance (this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position) >= 2)
+		{
+			components.agent.SetDestination(patrolling.waypoints[patrolling.waypointInd].transform.position);
+			components.mycontroller.Move (components.agent.desiredVelocity, false, false);
+		}
+		else if (Vector3.Distance (this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position) <= 2)
+		{
+			patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
+		}
+		else
+		{
+			components.mycontroller.Move(Vector3.zero);
+		}
 	}
 
 	// Main Chase Method
