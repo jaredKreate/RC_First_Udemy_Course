@@ -9,6 +9,8 @@ public class TripodAI : MonoBehaviour {
 	public Animator myAnim;
 	// This variable will store a reference to our sight script
 	public EnemySight mySight;
+	// This variable will store a reference to our Character Controller
+	public CharacterController mycontroller;
 
 	// This state represents the states that the AI character can actively be in
 	public enum State {
@@ -27,7 +29,8 @@ public class TripodAI : MonoBehaviour {
 	// We need this variable to indicate whether the AI unit is currently alive or not
 	private bool alive;
 
-	// We will need these when the AI needs to be patrolling
+	// We will need these if the AI needs to be patrolling
+	public bool amIOnPatrol;
 	public GameObject[] waypoints;
 	private int waypointInd;
 	public float patrolSpeed = 0.5f;
@@ -40,9 +43,10 @@ public class TripodAI : MonoBehaviour {
 		{
 			mySight = GetComponentInChildren<EnemySight>();
 		}
+		mycontroller = GetComponent<CharacterController>();
 	}
 
-	// This is our Finite State machine which will run continuously
+	// This is our Finite State machine which will run continuously until the AI character has been eliminated
 	IEnumerator FSM()
 	{
 		while (alive)
