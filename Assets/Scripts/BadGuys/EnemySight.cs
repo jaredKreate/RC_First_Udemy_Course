@@ -5,6 +5,7 @@ public class EnemySight : MonoBehaviour {
 
 	public bool playerSighted;
 	public float heightMultiplier;
+	public float angleDiff;
 	public float sightDist;
 	public GameObject[] lightbeams;
 
@@ -16,7 +17,15 @@ public class EnemySight : MonoBehaviour {
 			foreach(GameObject go in lightbeams)
 			{
 				Debug.DrawRay(go.transform.position + Vector3.up * heightMultiplier, -go.transform.up * sightDist, Color.red);
-				if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, -go.transform.up, out hit, sightDist));
+				Debug.DrawRay(go.transform.position + Vector3.up * heightMultiplier, -go.transform.up * sightDist, Color.red);
+				Debug.DrawRay(go.transform.position + Vector3.up * heightMultiplier, -go.transform.up * sightDist, Color.red);
+				if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, -go.transform.up, out hit, sightDist))
+				{
+					if(hit.collider.gameObject.tag == "Player")
+					{
+						playerSighted = true;
+					}
+				}
 			}
 //			Debug.DrawRay(transform.position + Vector3.up * heightMultiplier, -transform.up * sightDist, Color.green);
 //			Debug.DrawRay(transform.position + Vector3.up * heightMultiplier, (-transform.up + transform.right) * sightDist, Color.green);
