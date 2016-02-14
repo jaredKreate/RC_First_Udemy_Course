@@ -10,6 +10,7 @@ public class BasicAI : MonoBehaviour {
 
 	// This state represents the states that the AI character can actively be in
 	public enum State {
+		IDLE,
 		PATROL,
 		CHASE,
 		ATTACK,
@@ -33,7 +34,7 @@ public class BasicAI : MonoBehaviour {
 	void Start () {
 		agent = GetComponent<NavMeshAgent>();
 		myAnim = GetComponent<Animator>();
-		if (EnemySight == null)
+		if (mySight == null)
 		{
 			mySight = GetComponentInChildren<EnemySight>();
 		}
@@ -46,6 +47,9 @@ public class BasicAI : MonoBehaviour {
 		{
 			switch (state)
 			{
+			case State.IDLE:
+				Idle();
+				break;
 			case State.PATROL:
 				Patrol ();
 				break;
@@ -67,6 +71,12 @@ public class BasicAI : MonoBehaviour {
 			}
 			yield return null;
 		}
+	}
+
+	// Main Idle Method
+	public void Idle()
+	{
+		
 	}
 
 	// Main Patrolling Method
