@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour {
 
 	public bool Grounded()
 	{
-        if (Physics.CheckCapsule(capsuleTop.position, capsuleBottom.position, capsuleRadius))
+        if (Physics.CheckCapsule(capsuleTop.position, capsuleBottom.position, capsuleRadius, groundLayer))
             return true;
         return false;
 	}
