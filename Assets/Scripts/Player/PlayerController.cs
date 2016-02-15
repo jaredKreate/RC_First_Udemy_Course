@@ -66,7 +66,8 @@ public class PlayerController : MonoBehaviour {
 
 	void Run()
 	{
-		if (Mathf.Abs(forward) > 0.1f)
+        //if forward input is pressed and player is alive
+        if (Mathf.Abs(forward) > 0.1f && PlayerData.Instance.alive) 
 		{
 			velocity.z = forward * forwardSpeed * (walk > 0 ? 0.2f : 1);
 		}
@@ -81,7 +82,8 @@ public class PlayerController : MonoBehaviour {
 	///</summary>
 	void Strafe()
 	{
-		if (Mathf.Abs(strafe) > 0.1f)
+        //if strafe input is pressed and player is alive
+		if (Mathf.Abs(strafe) > 0.1f && PlayerData.Instance.alive)
 		{
 			velocity.x = strafe * strafeSpeed * (walk > 0 ? 0.2f : 1);
 		}
@@ -94,13 +96,17 @@ public class PlayerController : MonoBehaviour {
 
 	void Turn()
 	{
-		targetRotation = Quaternion.AngleAxis(turn * turnSpeed * Time.deltaTime, Vector3.up);
-		transform.rotation *= targetRotation;
+        if (PlayerData.Instance.alive)
+        {
+            targetRotation = Quaternion.AngleAxis(turn * turnSpeed * Time.deltaTime, Vector3.up);
+            transform.rotation *= targetRotation;
+        }
 	}
 
 	void Jump()
 	{
-		if (jump > 0 && forward >= 0) //must be moving forward to jump
+        //must be moving forward to jump and must be alive
+        if (jump > 0 && forward >= 0 && PlayerData.Instance.alive)
 		{
 			if (Grounded())
 				velocity.y = jumpSpeed;

@@ -24,6 +24,7 @@ public class PlayerData : MonoBehaviour {
         if (health < 0)
         {
             health = 0;
+            alive = false;
         }
     }
 

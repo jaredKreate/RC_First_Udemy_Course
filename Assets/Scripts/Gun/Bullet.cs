@@ -38,9 +38,12 @@ public class Bullet : MonoBehaviour {
             for (int i = 0; i < 3; i++)
             {
                 GameObject go = Instantiate(Debris, transform.position, Quaternion.identity) as GameObject;
-                Material hitMat = col.GetComponent<MeshRenderer>().material;
-                Material debrisMat = go.GetComponent<MeshRenderer>().material;
-                debrisMat.color = hitMat.color;
+                if (col.GetComponent<MeshRenderer>())
+                {
+                    Material hitMat = col.GetComponent<MeshRenderer>().material;
+                    Material debrisMat = go.GetComponent<MeshRenderer>().material;
+                    debrisMat.color = hitMat.color;
+                }
             }
             Destroy(gameObject);
         }

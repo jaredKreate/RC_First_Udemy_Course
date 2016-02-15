@@ -21,5 +21,6 @@ public class PlayerAnimatorController : MonoBehaviour {
         anim.SetFloat("AbsStrafe", Mathf.Abs(controller.StrafeInput));
         anim.SetFloat("Walk", controller.WalkInput);
         anim.SetBool("Grounded", controller.Grounded());
+        anim.SetBool("Alive", PlayerData.Instance.alive);
     }
 }
