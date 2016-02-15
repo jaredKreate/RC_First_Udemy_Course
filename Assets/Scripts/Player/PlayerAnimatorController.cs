@@ -16,7 +16,7 @@ public class PlayerAnimatorController : MonoBehaviour {
     {
         anim.SetFloat("Forward", controller.ForwardInput);
         anim.SetFloat("AbsForward", Mathf.Abs(controller.ForwardInput));
-        anim.SetFloat("Turn", controller.TurnInput);
+        anim.SetFloat("Turn", Mathf.Abs(controller.TurnInput));
         anim.SetFloat("Strafe", controller.StrafeInput);
         anim.SetFloat("AbsStrafe", Mathf.Abs(controller.StrafeInput));
         anim.SetFloat("Walk", controller.WalkInput);

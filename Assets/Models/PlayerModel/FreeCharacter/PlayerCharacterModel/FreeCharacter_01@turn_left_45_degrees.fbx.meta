@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 18d54c01de94b93479e596e111fa7e84
-timeCreated: 1455227081
+guid: 7f6d530dd5fc03545be33d23fe534436
+timeCreated: 1455557836
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -58,7 +58,8 @@ ModelImporter:
     100100: Bip001 Spine
     100102: Bip001 Spine1
     100104: Bip001 Spine2
-    100106: //RootNode
+    100106: Body_01
+    100108: //RootNode
     400000: Bip001
     400002: Bip001 Head
     400004: Bip001 L Calf
@@ -112,9 +113,12 @@ ModelImporter:
     400100: Bip001 Spine
     400102: Bip001 Spine1
     400104: Bip001 Spine2
-    400106: //RootNode
-    7400000: jump_up
+    400106: Body_01
+    400108: //RootNode
+    4300000: Body_01
+    7400000: turn_left_45_degrees
     9500000: //RootNode
+    13700000: Body_01
   materials:
     importMaterials: 1
     materialName: 0
@@ -129,7 +133,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -137,18 +141,18 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: jump_up
+      name: turn_left_45_degrees
       takeName: mixamo.com
-      firstFrame: 10
-      lastFrame: 16
+      firstFrame: 8
+      lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -342,6 +346,8 @@ ModelImporter:
       - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Spine2/Bip001
           Neck/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001
           R Finger4/Bip001 R Finger41/Bip001 R Finger42
+        weight: 1
+      - path: Body_01
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
