@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Jump()
 	{
-		if (jump > 0 && forward > 0) //must be moving forward to jump
+		if (jump > 0 && forward >= 0) //must be moving forward to jump
 		{
 			if (Grounded())
 				velocity.y = jumpSpeed;
