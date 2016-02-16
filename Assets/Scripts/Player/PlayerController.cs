@@ -30,7 +30,9 @@ public class PlayerController : MonoBehaviour {
 	public bool Grounded()
 	{
         if (Physics.CheckCapsule(capsuleTop.position, capsuleBottom.position, capsuleRadius, groundLayer))
+        {
             return true;
+        }
         return false;
 	}
 
@@ -69,7 +71,7 @@ public class PlayerController : MonoBehaviour {
         //if forward input is pressed and player is alive
         if (Mathf.Abs(forward) > 0.1f && PlayerData.Instance.alive) 
 		{
-			velocity.z = forward * forwardSpeed * (walk > 0 ? 0.2f : 1);
+			velocity.z = forward * forwardSpeed * (walk > 0 ? 0.3f : 1);
 		}
 		else
 		{
@@ -85,7 +87,7 @@ public class PlayerController : MonoBehaviour {
         //if strafe input is pressed and player is alive
 		if (Mathf.Abs(strafe) > 0.1f && PlayerData.Instance.alive)
 		{
-			velocity.x = strafe * strafeSpeed * (walk > 0 ? 0.2f : 1);
+			velocity.x = strafe * strafeSpeed * (walk > 0 ? 0.3f : 1);
 		}
 		else
 		{
@@ -118,7 +120,7 @@ public class PlayerController : MonoBehaviour {
 			if (!Grounded())
 				velocity.y -= gravity;
 			else
-				velocity.y = 0;
+				velocity.y = -gravity*2;
 		}
 	}
 }
