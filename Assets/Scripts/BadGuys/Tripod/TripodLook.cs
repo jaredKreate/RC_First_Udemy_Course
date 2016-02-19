@@ -14,7 +14,8 @@ public class TripodLook : MonoBehaviour {
 	void LateUpdate () {
 		if(triSight.playerSighted)
 		{
-			transform.LookAt(triSight.player.transform);
+			transform.LookAt(triSight.player);
+			transform.Rotate(90,0,180);
 		}
 	}
 }
