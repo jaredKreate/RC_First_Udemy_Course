@@ -11,7 +11,7 @@ public class TripodLook : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 		if(triSight.playerSighted)
 		{
 			transform.LookAt(triSight.player.transform);
