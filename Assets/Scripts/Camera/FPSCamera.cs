@@ -25,6 +25,7 @@ public class FPSCamera : MonoBehaviour {
 	void Start()
 	{
 		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
 		rotation = controller.GetRotation().ToEuler();
 		targetPos = controller.transform.position;
 	}

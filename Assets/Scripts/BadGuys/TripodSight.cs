@@ -8,6 +8,7 @@ public class TripodSight : MonoBehaviour {
 	public float angleDiff;
 	public float sightDist;
 	public GameObject[] lightbeams;
+	public GameObject player;
 
 	// Update is called once per frame
 	void Update () {
@@ -41,6 +42,10 @@ public class TripodSight : MonoBehaviour {
 					}
 				}
 			}
+		}
+		if (playerSighted)
+		{
+			transform.LookAt(player.transform.position);
 		}
 	}
 }
