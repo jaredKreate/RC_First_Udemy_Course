@@ -14,7 +14,6 @@ public class TripodSight : MonoBehaviour {
 	void Update () {
 		if (!playerSighted)
 		{
-			Debug.Log("Stepped into Trisight Else");
 			RaycastHit hit;
 			foreach(GameObject go in lightbeams)
 			{

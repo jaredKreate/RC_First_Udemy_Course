@@ -48,7 +48,7 @@ public class TripodAI : MonoBehaviour {
 	public Patrolling patrolling;
 
 	// Use this for initialization
-	void Start () {
+	void awake () {
 		components.agent = GetComponent<NavMeshAgent>();
 		components.myAnim = GetComponent<Animator>();
 		if (components.mySight == null)
@@ -57,6 +57,7 @@ public class TripodAI : MonoBehaviour {
 		}
 		components.mycontroller = GetComponent<CharacterController>();
 		patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
+		StartCoroutine(FSM());
 		alive = true;
 		state = TripodAI.State.IDLE;
 	}
@@ -70,24 +71,31 @@ public class TripodAI : MonoBehaviour {
 			{
 			case State.IDLE:
 				Idle();
+				Debug.Log("I am in state: " + state);
 				break;
 			case State.PATROL:
 				Patrol ();
+				Debug.Log("I am in state: " + state);
 				break;
 			case State.CHASE:
 				Chase ();
+				Debug.Log("I am in state: " + state);
 				break;
 			case State.ATTACK:
 				Attack ();
+				Debug.Log("I am in state: " + state);
 				break;
 			case State.EVADE:
 				Evade ();
+				Debug.Log("I am in state: " + state);
 				break;
 			case State.GETAMMO:
 				GetAmmo ();
+				Debug.Log("I am in state: " + state);
 				break;
 			case State.GETHEALTH:
 				GetHealth ();
+				Debug.Log("I am in state: " + state);
 				break;
 			}
 			yield return null;
