@@ -4,6 +4,7 @@ using System.Collections;
 public class TripodLook : MonoBehaviour {
 
 	public TripodSight triSight;
+	public Transform[] lightBeams;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +17,11 @@ public class TripodLook : MonoBehaviour {
 		{
 			transform.LookAt(triSight.player);
 			transform.Rotate(90,0,180);
+			foreach(Transform tr in lightBeams)
+			{
+				tr.LookAt(triSight.player);
+				tr.Rotate(90,0,180);
+			}
 		}
 	}
 }

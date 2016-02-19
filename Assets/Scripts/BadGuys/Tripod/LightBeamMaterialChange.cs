@@ -7,6 +7,7 @@ public class LightBeamMaterialChange : MonoBehaviour {
 	public Material currMat;
 	public Material newMat;
 	public TripodSight triSight;
+	public float lightTexRot;
 
 	// Use this for initialization
 	void Start () {
@@ -16,7 +17,8 @@ public class LightBeamMaterialChange : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () {		
+		this.renderer.material.mainTextureOffset = new Vector2(Time.time * lightTexRot,0);
 		if(triSight.playerSighted)
 		{
 			renderer.material = newMat;
