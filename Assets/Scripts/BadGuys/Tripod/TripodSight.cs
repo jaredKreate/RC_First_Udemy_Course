@@ -12,8 +12,13 @@ public class TripodSight : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(!playerSighted)
+		if (playerSighted)
 		{
+			transform.LookAt(player.transform.position);
+		}
+		else
+		{
+			Debug.Log("Stepped into Trisight Else");
 			RaycastHit hit;
 			foreach(GameObject go in lightbeams)
 			{
@@ -25,6 +30,7 @@ public class TripodSight : MonoBehaviour {
 					if(hit.collider.gameObject.tag == "Player")
 					{
 						playerSighted = true;
+						Debug.Log("Tripod Sees Player");
 					}
 				}
 				if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, (-go.transform.up + transform.right * angleDiff), out hit, sightDist))
@@ -32,6 +38,7 @@ public class TripodSight : MonoBehaviour {
 					if(hit.collider.gameObject.tag == "Player")
 					{
 						playerSighted = true;
+						Debug.Log("Tripod Sees Player");
 					}
 				}
 				if(Physics.Raycast(transform.position + Vector3.up * heightMultiplier, (-go.transform.up -transform.right * angleDiff), out hit, sightDist))
@@ -39,13 +46,10 @@ public class TripodSight : MonoBehaviour {
 					if(hit.collider.gameObject.tag == "Player")
 					{
 						playerSighted = true;
+						Debug.Log("Tripod Sees Player");
 					}
 				}
 			}
-		}
-		if (playerSighted)
-		{
-			transform.LookAt(player.transform.position);
 		}
 	}
 }
