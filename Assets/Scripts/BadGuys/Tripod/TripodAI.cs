@@ -188,6 +188,11 @@ public class TripodAI : MonoBehaviour {
 		}
 	}
 
+	public void FireTwo()
+	{
+		
+	}
+
 	// Main Evade Method
 	public void Evade()
 	{
