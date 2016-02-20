@@ -25,8 +25,6 @@ public class TripodAI : MonoBehaviour {
 		CHASE,
 		ATTACK,
 		EVADE,
-		GETAMMO,
-		GETHEALTH,
 		DEATH
 	}
 
@@ -90,14 +88,6 @@ public class TripodAI : MonoBehaviour {
 				Evade ();
 				Debug.Log("I am in state: " + state);
 				break;
-			case State.GETAMMO:
-				GetAmmo ();
-				Debug.Log("I am in state: " + state);
-				break;
-			case State.GETHEALTH:
-				GetHealth ();
-				Debug.Log("I am in state: " + state);
-				break;
 			}
 			yield return null;
 		}
@@ -147,18 +137,6 @@ public class TripodAI : MonoBehaviour {
 
 	// Main Evade Method
 	public void Evade()
-	{
-
-	}
-
-	// Main GetAmmo Method
-	public void GetAmmo()
-	{
-
-	}
-
-	// Main GetHealth Method
-	public void GetHealth()
 	{
 
 	}
