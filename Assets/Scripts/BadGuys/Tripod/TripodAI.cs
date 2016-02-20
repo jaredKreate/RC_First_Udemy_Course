@@ -11,7 +11,7 @@ public class TripodAI : MonoBehaviour {
 		// This variable will store a reference to our animator
 		public Animator myAnim;
 		// This variable will store a reference to our sight script
-		public EnemySight mySight;
+		public TripodSight mySight;
 		// This variable will store a reference to our Character Controller
 		public CharacterController mycontroller;	
 	}
@@ -40,10 +40,34 @@ public class TripodAI : MonoBehaviour {
 		public bool amIOnPatrol;
 		public GameObject[] waypoints;
 		public int waypointInd;
-		public float patrolSpeed = 0.5f;
+		public float patrolSpeed;
+		public float maxWaypointDistance;
 	}
 
 	public Patrolling patrolling;
+
+	[System.Serializable]
+	public class Chasing
+	{
+		public bool chase;
+		public float chaseSpeed;
+		public float minDistance;
+		public float maxDistance;
+	}
+
+	public Chasing chasing;
+
+	[System.Serializable]
+	public class Attacking
+	{
+		public GameObject bullet;
+		public float timer;
+		public float waitShot = 2f;
+		public Transform shotPos;
+		public int ammoCount = 3;	
+	}
+
+	public Attacking attacking;
 
 	// Use this for initialization
 	void Awake () {
@@ -51,7 +75,7 @@ public class TripodAI : MonoBehaviour {
 		components.myAnim = GetComponent<Animator>();
 		if (components.mySight == null)
 		{
-			components.mySight = GetComponentInChildren<EnemySight>();
+			components.mySight = GetComponentInChildren<TripodSight>();
 		}
 		components.mycontroller = GetComponent<CharacterController>();
 //		patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
@@ -108,18 +132,22 @@ public class TripodAI : MonoBehaviour {
 	public void Patrol()
 	{
 		components.agent.speed = patrolling.patrolSpeed;
-		if (Vector3.Distance (this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position) >= 2)
+		if (Vector3.Distance (this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position) >= patrolling.maxWaypointDistance)
 		{
 			components.agent.SetDestination(patrolling.waypoints[patrolling.waypointInd].transform.position);
 			components.mycontroller.Move (components.agent.desiredVelocity);
 		}
-		else if (Vector3.Distance (this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position) <= 2)
+		else if (Vector3.Distance (this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position) <= patrolling.maxWaypointDistance)
 		{
 			patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
 		}
 		else
 		{
 			components.mycontroller.Move(Vector3.zero);
+		}
+		if(components.mySight.playerSighted)
+		{
+			state = TripodAI.State.CHASE;
 		}
 	}
 
@@ -132,7 +160,16 @@ public class TripodAI : MonoBehaviour {
 	// Main Attack Method
 	public void Attack()
 	{
+		InvokeRepeating("Fire",2,120);
+	}
 
+	public void Fire()
+	{
+		attacking.timer += Time.deltaTime;
+		if (attacking.timer > attacking.waitShot) {
+			GameObject bulletClone = Instantiate(attacking.bullet, attacking.shotPos.position, attacking.shotPos.rotation) as GameObject;
+			attacking.timer = 0;
+		}
 	}
 
 	// Main Evade Method
