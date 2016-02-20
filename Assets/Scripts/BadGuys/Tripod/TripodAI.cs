@@ -147,6 +147,8 @@ public class TripodAI : MonoBehaviour {
 		}
 		if(components.mySight.playerSighted)
 		{
+			patrolling.amIOnPatrol = false;
+			components.myAnim.SetBool("shouldPatrol", false);
 			state = TripodAI.State.CHASE;
 		}
 	}
@@ -154,7 +156,19 @@ public class TripodAI : MonoBehaviour {
 	// Main Chase Method
 	public void Chase()
 	{
-
+		if(Vector3.Distance(this.transform.position,components.mySight.player.position) <= chasing.maxDistance)
+		{
+			components.agent.SetDestination(components.mySight.player.position);
+			components.mycontroller.Move(components.agent.desiredVelocity);
+		}
+		else if(Vector3.Distance(this.transform.position, components.mySight.player.position) <= chasing.minDistance)
+		{
+			Attack();
+		}
+		else if(Vector3.Distance(this.transform.position,components.mySight.player.position) > chasing.maxDistance)		
+		{
+			state = TripodAI.State.IDLE;
+		}
 	}
 
 	// Main Attack Method
@@ -163,8 +177,10 @@ public class TripodAI : MonoBehaviour {
 		InvokeRepeating("Fire",2,120);
 	}
 
+	// Method used to actually fire "bullets" 
 	public void Fire()
 	{
+		components.myAnim.SetBool("shouldFire", true);
 		attacking.timer += Time.deltaTime;
 		if (attacking.timer > attacking.waitShot) {
 			GameObject bulletClone = Instantiate(attacking.bullet, attacking.shotPos.position, attacking.shotPos.rotation) as GameObject;
