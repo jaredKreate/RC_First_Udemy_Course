@@ -180,12 +180,13 @@ public class TripodAI : MonoBehaviour {
 
 	public void BackUp()
 	{		
+		components.myAnim.SetBool("backUp", true);
 		Debug.Log("I should be backing up!");
+		transform.LookAt(components.mySight.player.transform.position);
 		components.agent.speed = chasing.backupSpeed;
 		Vector3 backUpDest = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - chasing.backUpDistance);
 		components.agent.SetDestination(backUpDest);
 		components.mycontroller.Move(components.agent.desiredVelocity);
-		components.myAnim.SetBool("backUp", false);
 	}
 
 	// Main Attack Method
