@@ -48,7 +48,7 @@ public class TripodAI : MonoBehaviour {
 	public Patrolling patrolling;
 
 	// Use this for initialization
-	void awake () {
+	void Awake () {
 		components.agent = GetComponent<NavMeshAgent>();
 		components.myAnim = GetComponent<Animator>();
 		if (components.mySight == null)
@@ -56,10 +56,11 @@ public class TripodAI : MonoBehaviour {
 			components.mySight = GetComponentInChildren<EnemySight>();
 		}
 		components.mycontroller = GetComponent<CharacterController>();
-		patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
-		StartCoroutine(FSM());
+//		patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
+		patrolling.waypointInd = 3;
 		alive = true;
 		state = TripodAI.State.IDLE;
+		StartCoroutine("FSM");
 	}
 
 	// This is our Finite State machine which will run continuously until the AI character has been eliminated
@@ -120,6 +121,7 @@ public class TripodAI : MonoBehaviour {
 		{
 			components.agent.SetDestination(patrolling.waypoints[patrolling.waypointInd].transform.position);
 			components.mycontroller.Move (components.agent.desiredVelocity);
+			Debug.Log("Distance: " + Vector3.Distance(this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position));
 		}
 		else if (Vector3.Distance (this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position) <= 2)
 		{
