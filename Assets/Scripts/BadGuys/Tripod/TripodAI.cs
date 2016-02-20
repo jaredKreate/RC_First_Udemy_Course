@@ -122,7 +122,6 @@ public class TripodAI : MonoBehaviour {
 		{
 			components.agent.SetDestination(patrolling.waypoints[patrolling.waypointInd].transform.position);
 			components.mycontroller.Move (components.agent.desiredVelocity);
-			Debug.Log("Distance: " + Vector3.Distance(this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position));
 		}
 		else if (Vector3.Distance (this.transform.position, patrolling.waypoints[patrolling.waypointInd].transform.position) <= 2)
 		{
