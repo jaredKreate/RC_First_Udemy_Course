@@ -51,8 +51,10 @@ public class TripodAI : MonoBehaviour {
 	{
 		public bool chase;
 		public float chaseSpeed;
+		public float backupSpeed;
 		public float minDistance;
 		public float maxDistance;
+		public float backUpDistance;
 	}
 
 	public Chasing chasing;
@@ -93,6 +95,7 @@ public class TripodAI : MonoBehaviour {
 			switch (state)
 			{
 			case State.IDLE:
+				yield return new WaitForSeconds(5);
 				Idle();
 				Debug.Log("I am in state: " + state);
 				break;
@@ -156,19 +159,33 @@ public class TripodAI : MonoBehaviour {
 	// Main Chase Method
 	public void Chase()
 	{
-		if(Vector3.Distance(this.transform.position,components.mySight.player.position) <= chasing.maxDistance)
+		components.agent.speed = chasing.chaseSpeed;
+		if(Vector3.Distance(this.transform.position, components.mySight.player.position) <= chasing.minDistance)
+		{
+			BackUp();
+		}
+		else if(Vector3.Distance(this.transform.position,components.mySight.player.position) > chasing.minDistance)
 		{
 			components.agent.SetDestination(components.mySight.player.position);
 			components.mycontroller.Move(components.agent.desiredVelocity);
-		}
-		else if(Vector3.Distance(this.transform.position, components.mySight.player.position) <= chasing.minDistance)
-		{
-			Attack();
 		}
 		else if(Vector3.Distance(this.transform.position,components.mySight.player.position) > chasing.maxDistance)		
 		{
 			state = TripodAI.State.IDLE;
 		}
+		else{
+			Attack();
+		}
+	}
+
+	public void BackUp()
+	{		
+		Debug.Log("I should be backing up!");
+		components.agent.speed = chasing.backupSpeed;
+		Vector3 backUpDest = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - chasing.backUpDistance);
+		components.agent.SetDestination(backUpDest);
+		components.mycontroller.Move(components.agent.desiredVelocity);
+		components.myAnim.SetBool("backUp", false);
 	}
 
 	// Main Attack Method
