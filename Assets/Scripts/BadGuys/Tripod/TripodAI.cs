@@ -110,6 +110,7 @@ public class TripodAI : MonoBehaviour {
 		if(patrolling.amIOnPatrol)
 		{
 			state = TripodAI.State.PATROL;
+			components.myAnim.SetBool("shouldPatrol", true);
 		}
 	}
 
