@@ -8,6 +8,7 @@ public class LightBeamMaterialChange : MonoBehaviour {
 	public Material newMat;
 	public TripodSight triSight;
 	public float lightTexRot;
+	public Light myLight;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +23,7 @@ public class LightBeamMaterialChange : MonoBehaviour {
 		if(triSight.playerSighted)
 		{
 			renderer.material = newMat;
+			myLight.color = new Color(255,0,0);
 		}
 	}
 }

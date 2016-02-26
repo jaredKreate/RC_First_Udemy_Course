@@ -182,29 +182,26 @@ public class TripodAI : MonoBehaviour {
 	public void Chase()
 	{
 		components.agent.speed = chasing.chaseSpeed;
-		if(Vector3.Distance(this.transform.position, components.mySight.player.position) <= chasing.minDistance)
+		if(Vector3.Distance(this.transform.position,components.mySight.player.position) < chasing.minDistance)
 		{
-			state = TripodAI.State.IDLE;
-			components.mySight.playerSighted = false;
+			state = TripodAI.State.ATTACK;
 		}
-		else if(Vector3.Distance(this.transform.position,components.mySight.player.position) > chasing.minDistance)
+		if(Vector3.Distance(this.transform.position,components.mySight.player.position) >= chasing.minDistance)
 		{
 			components.agent.SetDestination(components.mySight.player.position);
 			components.mycontroller.Move(components.agent.desiredVelocity);
 		}
-		else if(Vector3.Distance(this.transform.position,components.mySight.player.position) > chasing.maxDistance)		
+		if(Vector3.Distance(this.transform.position,components.mySight.player.position) > chasing.maxDistance)		
 		{
 			state = TripodAI.State.IDLE;
-		}
-		else{
-			Attack();
 		}
 	}
 
 	// Main Attack Method
 	public void Attack()
 	{
-//		InvokeRepeating("Fire",2,120);
+		components.myAnim.SetBool("shouldPatrol", false);
+		Fire();
 	}
 
 	// Method used to actually fire "bullets" 
