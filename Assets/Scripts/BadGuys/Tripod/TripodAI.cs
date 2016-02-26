@@ -217,6 +217,14 @@ public class TripodAI : MonoBehaviour {
 
 	}
 
+	void OnTriggerEnter(Collider coll)
+	{
+		if(coll.gameObject.tag == "Player")
+		{
+			components.mySight.playerSighted = true;
+		}
+	}
+
 	// Update is called once per frame
 	void Update() {
 
