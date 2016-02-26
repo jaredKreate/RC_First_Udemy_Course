@@ -18,6 +18,7 @@ public class TripodAI : MonoBehaviour {
 		public EnemyData myData;
 		//Reference to Trigger Collider
 		public Collider myTrigger;
+		public GameObject myExplosion;
 	}
 
 	public Components components;
@@ -132,6 +133,8 @@ public class TripodAI : MonoBehaviour {
 				break;
 			case State.DEATH:
 				Death ();
+				yield return new WaitForSeconds(5);
+				RemoveTripod();
 				Debug.Log("I am in state: " + state);
 				break;
 			}
@@ -231,6 +234,15 @@ public class TripodAI : MonoBehaviour {
 		{
 			Destroy(go);
 		}
+		components.mycontroller.enabled = false;
+		components.myData.enabled = false;
+		components.mySight.enabled = false;
+	}
+
+	public void RemoveTripod()
+	{
+		Instantiate(components.myExplosion,this.transform.position, this.transform.rotation);
+		Destroy(this.gameObject);
 	}
 
 	void OnTriggerEnter(Collider coll)
