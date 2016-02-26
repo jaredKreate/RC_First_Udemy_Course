@@ -251,6 +251,10 @@ public class TripodAI : MonoBehaviour {
 		{
 			state = TripodAI.State.SPAWN;
 		}
+		else if(coll.gameObject.tag == "PlayerBullet")
+		{
+			components.mySight.playerSighted = true;
+		}			
 	}
 
 	void ReleaseMinions()
@@ -272,6 +276,10 @@ public class TripodAI : MonoBehaviour {
 		if(!components.myData.alive)
 		{
 			state = TripodAI.State.DEATH;
+		}
+		if(components.mySight.playerSighted)
+		{
+			state = TripodAI.State.CHASE;
 		}
 	}
 }
