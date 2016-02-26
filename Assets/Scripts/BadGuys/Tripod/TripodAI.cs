@@ -16,6 +16,8 @@ public class TripodAI : MonoBehaviour {
 		public CharacterController mycontroller;
 		// Reference to Enemy Data Script
 		public EnemyData myData;
+		//Reference to Trigger Collider
+		public Collider myTrigger;
 	}
 
 	public Components components;
@@ -25,9 +27,8 @@ public class TripodAI : MonoBehaviour {
 		IDLE,
 		PATROL,
 		CHASE,
-		BACKUP,
 		ATTACK,
-		EVADE,
+		SPAWN,
 		DEATH
 	}
 
@@ -61,19 +62,6 @@ public class TripodAI : MonoBehaviour {
 	public Chasing chasing;
 
 	[System.Serializable]
-	public class BackingUp
-	{
-		public bool backUpDestSet;
-		public Vector3 backUpDest;
-		public float backupSpeed;
-		public float minDistance;
-		public float maxDistance;
-		public float backUpDistance;
-	}
-
-	public BackingUp backingUp;
-
-	[System.Serializable]
 	public class Attacking
 	{
 		public GameObject bullet;
@@ -84,6 +72,17 @@ public class TripodAI : MonoBehaviour {
 	}
 
 	public Attacking attacking;
+
+	[System.Serializable]
+	public class Spawning
+	{
+		public GameObject minion;
+		public int maxMinions;
+		public Transform spawnLocation;
+		public int minionsSpawned;
+	}
+
+	public Spawning spawning;
 
 	// Use this for initialization
 	void Awake () {
@@ -122,16 +121,13 @@ public class TripodAI : MonoBehaviour {
 				Chase ();
 				Debug.Log("I am in state: " + state);
 				break;
-			case State.BACKUP:
-				BackUp ();
-				Debug.Log("I am in state: " + state);
-				break;
 			case State.ATTACK:
 				Attack ();
 				Debug.Log("I am in state: " + state);
 				break;
-			case State.EVADE:
-				Evade ();
+			case State.SPAWN:				
+				ReleaseMinions ();
+				yield return new WaitForSeconds(1);
 				Debug.Log("I am in state: " + state);
 				break;
 			case State.DEATH:
@@ -185,7 +181,8 @@ public class TripodAI : MonoBehaviour {
 		components.agent.speed = chasing.chaseSpeed;
 		if(Vector3.Distance(this.transform.position, components.mySight.player.position) <= chasing.minDistance)
 		{
-			state = TripodAI.State.BACKUP;
+			state = TripodAI.State.IDLE;
+			components.mySight.playerSighted = false;
 		}
 		else if(Vector3.Distance(this.transform.position,components.mySight.player.position) > chasing.minDistance)
 		{
@@ -199,49 +196,6 @@ public class TripodAI : MonoBehaviour {
 		else{
 			Attack();
 		}
-	}
-
-	public void BackUp()
-	{		
-		if(backingUp.backUpDestSet)
-		{
-			BackUpCheckAndMove();
-		}
-		else
-		{
-			SetBackUpDest();
-		}
-//		components.myAnim.SetBool("backUp", true);
-//		transform.LookAt(components.mySight.player.transform.position);
-//		components.agent.speed = chasing.backupSpeed;
-//		Vector3 backUpDest = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - chasing.backUpDistance);
-//		components.agent.SetDestination(backUpDest);
-//		components.mycontroller.Move(components.agent.desiredVelocity);
-	}
-
-	public void BackUpCheckAndMove()
-	{
-		components.agent.speed = backingUp.backupSpeed;
-		components.myAnim.SetBool("backUp",true);
-		transform.LookAt(components.mySight.player.transform.position);
-		if(Vector3.Distance(this.transform.position, backingUp.backUpDest) <= backingUp.minDistance)
-		{
-			state = TripodAI.State.ATTACK;
-		}
-		else if(Vector3.Distance(this.transform.position,backingUp.backUpDest) > backingUp.minDistance)
-		{
-			components.agent.SetDestination(backingUp.backUpDest);
-			components.mycontroller.Move(components.agent.desiredVelocity);
-		}
-		else{
-			state = TripodAI.State.ATTACK;
-		}
-	}
-
-	public void SetBackUpDest()
-	{
-		backingUp.backUpDest = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - backingUp.backUpDistance);
-		backingUp.backUpDestSet = true;
 	}
 
 	// Main Attack Method
@@ -266,12 +220,6 @@ public class TripodAI : MonoBehaviour {
 		
 	}
 
-	// Main Evade Method
-	public void Evade()
-	{
-
-	}
-
 	public void Death()
 	{
 		if(patrolling.amIOnPatrol)
@@ -289,7 +237,21 @@ public class TripodAI : MonoBehaviour {
 	{
 		if(coll.gameObject.tag == "Player")
 		{
-			components.mySight.playerSighted = true;
+			state = TripodAI.State.SPAWN;
+		}
+	}
+
+	void ReleaseMinions()
+	{
+		components.myAnim.SetBool("shouldPatrol", false);
+		spawning.minionsSpawned += 1;
+		if(spawning.minionsSpawned <= spawning.maxMinions)
+		{
+			Instantiate(spawning.minion, spawning.spawnLocation.position, this.transform.rotation);
+		}
+		else
+		{
+			state = TripodAI.State.IDLE;
 		}
 	}
 
