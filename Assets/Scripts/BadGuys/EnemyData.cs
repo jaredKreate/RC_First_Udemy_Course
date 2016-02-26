@@ -25,7 +25,7 @@ public class EnemyData : MonoBehaviour {
         {
             health = 0;
             alive = false;
-            Destroy(gameObject);
+//            Destroy(gameObject);
         }
     }
 

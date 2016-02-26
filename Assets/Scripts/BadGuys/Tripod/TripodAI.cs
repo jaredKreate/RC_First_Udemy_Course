@@ -13,7 +13,9 @@ public class TripodAI : MonoBehaviour {
 		// This variable will store a reference to our sight script
 		public TripodSight mySight;
 		// This variable will store a reference to our Character Controller
-		public CharacterController mycontroller;	
+		public CharacterController mycontroller;
+		// Reference to Enemy Data Script
+		public EnemyData myData;
 	}
 
 	public Components components;
@@ -23,6 +25,7 @@ public class TripodAI : MonoBehaviour {
 		IDLE,
 		PATROL,
 		CHASE,
+		BACKUP,
 		ATTACK,
 		EVADE,
 		DEATH
@@ -51,13 +54,24 @@ public class TripodAI : MonoBehaviour {
 	{
 		public bool chase;
 		public float chaseSpeed;
+		public float minDistance;
+		public float maxDistance;
+	}
+
+	public Chasing chasing;
+
+	[System.Serializable]
+	public class BackingUp
+	{
+		public bool backUpDestSet;
+		public Vector3 backUpDest;
 		public float backupSpeed;
 		public float minDistance;
 		public float maxDistance;
 		public float backUpDistance;
 	}
 
-	public Chasing chasing;
+	public BackingUp backingUp;
 
 	[System.Serializable]
 	public class Attacking
@@ -80,6 +94,7 @@ public class TripodAI : MonoBehaviour {
 			components.mySight = GetComponentInChildren<TripodSight>();
 		}
 		components.mycontroller = GetComponent<CharacterController>();
+		components.myData = GetComponent<EnemyData>();
 //		patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
 		patrolling.waypointInd = 3;
 		alive = true;
@@ -107,12 +122,20 @@ public class TripodAI : MonoBehaviour {
 				Chase ();
 				Debug.Log("I am in state: " + state);
 				break;
+			case State.BACKUP:
+				BackUp ();
+				Debug.Log("I am in state: " + state);
+				break;
 			case State.ATTACK:
 				Attack ();
 				Debug.Log("I am in state: " + state);
 				break;
 			case State.EVADE:
 				Evade ();
+				Debug.Log("I am in state: " + state);
+				break;
+			case State.DEATH:
+				Death ();
 				Debug.Log("I am in state: " + state);
 				break;
 			}
@@ -162,7 +185,7 @@ public class TripodAI : MonoBehaviour {
 		components.agent.speed = chasing.chaseSpeed;
 		if(Vector3.Distance(this.transform.position, components.mySight.player.position) <= chasing.minDistance)
 		{
-			BackUp();
+			state = TripodAI.State.BACKUP;
 		}
 		else if(Vector3.Distance(this.transform.position,components.mySight.player.position) > chasing.minDistance)
 		{
@@ -180,19 +203,51 @@ public class TripodAI : MonoBehaviour {
 
 	public void BackUp()
 	{		
-		components.myAnim.SetBool("backUp", true);
-		Debug.Log("I should be backing up!");
+		if(backingUp.backUpDestSet)
+		{
+			BackUpCheckAndMove();
+		}
+		else
+		{
+			SetBackUpDest();
+		}
+//		components.myAnim.SetBool("backUp", true);
+//		transform.LookAt(components.mySight.player.transform.position);
+//		components.agent.speed = chasing.backupSpeed;
+//		Vector3 backUpDest = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - chasing.backUpDistance);
+//		components.agent.SetDestination(backUpDest);
+//		components.mycontroller.Move(components.agent.desiredVelocity);
+	}
+
+	public void BackUpCheckAndMove()
+	{
+		components.agent.speed = backingUp.backupSpeed;
+		components.myAnim.SetBool("backUp",true);
 		transform.LookAt(components.mySight.player.transform.position);
-		components.agent.speed = chasing.backupSpeed;
-		Vector3 backUpDest = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - chasing.backUpDistance);
-		components.agent.SetDestination(backUpDest);
-		components.mycontroller.Move(components.agent.desiredVelocity);
+		if(Vector3.Distance(this.transform.position, backingUp.backUpDest) <= backingUp.minDistance)
+		{
+			state = TripodAI.State.ATTACK;
+		}
+		else if(Vector3.Distance(this.transform.position,backingUp.backUpDest) > backingUp.minDistance)
+		{
+			components.agent.SetDestination(backingUp.backUpDest);
+			components.mycontroller.Move(components.agent.desiredVelocity);
+		}
+		else{
+			state = TripodAI.State.ATTACK;
+		}
+	}
+
+	public void SetBackUpDest()
+	{
+		backingUp.backUpDest = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - backingUp.backUpDistance);
+		backingUp.backUpDestSet = true;
 	}
 
 	// Main Attack Method
 	public void Attack()
 	{
-		InvokeRepeating("Fire",2,120);
+//		InvokeRepeating("Fire",2,120);
 	}
 
 	// Method used to actually fire "bullets" 
@@ -217,6 +272,19 @@ public class TripodAI : MonoBehaviour {
 
 	}
 
+	public void Death()
+	{
+		if(patrolling.amIOnPatrol)
+		{
+			patrolling.amIOnPatrol = false;
+		}
+		components.myAnim.SetBool("dead", true);
+		foreach(GameObject go in components.mySight.lightbeams)
+		{
+			Destroy(go);
+		}
+	}
+
 	void OnTriggerEnter(Collider coll)
 	{
 		if(coll.gameObject.tag == "Player")
@@ -227,6 +295,9 @@ public class TripodAI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-
+		if(!components.myData.alive)
+		{
+			state = TripodAI.State.DEATH;
+		}
 	}
 }
