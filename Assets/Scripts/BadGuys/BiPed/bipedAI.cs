@@ -142,13 +142,13 @@ public class bipedAI : MonoBehaviour {
 	public void Attack()
 	{
 		components.myAnim.SetBool("walk", false);
-		components.myAnim.SetBool("attack", true);
+		components.myAnim.SetBool("shoot", true);
 		chasing.rotDir = components.mySight.player.position - transform.position;
 		chasing.rotDir.Normalize();
 		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(chasing.rotDir), chasing.chaseSpeed * Time.deltaTime);
 		if(Vector3.Distance(components.mySight.player.position, this.transform.position) >= chasing.maxDistance)
 		{
-			components.myAnim.SetBool("attack", false);
+			components.myAnim.SetBool("shoot", false);
 			components.myAnim.SetBool("walk", true);
 			state = bipedAI.State.CHASE;
 		}
@@ -158,7 +158,7 @@ public class bipedAI : MonoBehaviour {
 	{
 		components.myAnim.enabled = false;
 		components.myAnim.SetBool("walk", false);
-		components.myAnim.SetBool("attack", false);
+		components.myAnim.SetBool("shoot", false);
 		//		components.myLook.enabled = false;
 		components.mycontroller.enabled = false;
 		components.myData.enabled = false;
