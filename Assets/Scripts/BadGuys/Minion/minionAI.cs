@@ -41,16 +41,6 @@ public class minionAI : MonoBehaviour {
 	public class Idling
 	{
 		public float idleSpeed;
-		public float changeInterval;
-		public float maxdirectionChange;
-		public Vector3 waypoint = new Vector3(0,0,0);
-		public float range;
-		private Vector3 baseVector3 = new Vector3(1,0,1);
-		public float timer;
-		public float heading;
-		public float maxHeadingChange;
-		public Vector3 targetRotation;
-		public float idlingSpeed;
 	}
 
 	public Idling idling;
@@ -90,10 +80,7 @@ public class minionAI : MonoBehaviour {
 	{
 		components.agent = GetComponent<NavMeshAgent>();
 		components.myAnim = GetComponent<Animator>();
-		if (components.mySight == null)
-		{
-			components.mySight = GetComponentInChildren<minionSight>();
-		}
+		components.mySight = GetComponent<minionSight>();
 		components.mycontroller = GetComponent<CharacterController>();
 		components.myData = GetComponent<EnemyData>();
 		alive = true;
@@ -109,7 +96,7 @@ public class minionAI : MonoBehaviour {
 				Idle();
 				break;
 			case State.CHASE:
-				Debug.Log("I am in state ATTACK");
+				Debug.Log("I am in state Chase");
 				Chase();
 				break;
 			case State.ATTACK:
@@ -117,7 +104,7 @@ public class minionAI : MonoBehaviour {
 				Attack();
 				break;
 			case State.DEATH:
-				Debug.Log("I am in state ATTACK");
+				Debug.Log("I am Dead");
 				Death();
 				break;
 			}
@@ -128,33 +115,12 @@ public class minionAI : MonoBehaviour {
 	public void Idle()
 	{
 		if(!components.mySight.playerSighted)
-		{
-			StartCoroutine(NewHeading());
-			transform.position += transform.forward * idling.idlingSpeed * Time.deltaTime;
+		{			
+			components.mycontroller.SimpleMove(transform.forward * idling.idleSpeed);
 			if (components.mySight.playerSighted) {
 				state = minionAI.State.CHASE;
 			}
 		}
-	}
-
-	IEnumerator NewHeading ()
-	{
-		idling.timer += Time.deltaTime;
-		if (idling.timer > idling.changeInterval) {			
-			idling.waypoint = UnityEngine.Random.insideUnitSphere * 5;
-			idling.waypoint = new Vector3(idling.waypoint.x, 0 , idling.waypoint.z);
-			transform.LookAt(idling.waypoint);
-			idling.timer = 0;
-			yield return null;
-		}
-	}
-
-	void NewHeadingRoutine ()
-	{
-		var floor = Mathf.Clamp(idling.heading - idling.maxHeadingChange, 0, 360);
-		var ceil  = Mathf.Clamp(idling.heading + idling.maxHeadingChange, 0, 360);
-		idling.heading = UnityEngine.Random.Range(floor, ceil);
-		idling.targetRotation = new Vector3(0, idling.heading, 0);
 	}
 
 	public void Chase()
@@ -172,9 +138,9 @@ public class minionAI : MonoBehaviour {
 		
 	}
 
-	void OnTriggerEnter(Collider coll)
+	void OnTriggerEnter(Collider other)
 	{
-		if(coll.gameObject.tag == "Player");
+		if(other.gameObject.tag == "Player");
 		{
 			components.mySight.playerSighted = true;
 		}
