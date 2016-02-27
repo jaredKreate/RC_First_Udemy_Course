@@ -107,6 +107,8 @@ public class minionAI : MonoBehaviour {
 			case State.DEATH:
 				Debug.Log("I am Dead");
 				Death();
+				yield return new WaitForSeconds(3);
+				RemoveMinion();
 				break;
 			}
 			yield return null;
@@ -128,12 +130,6 @@ public class minionAI : MonoBehaviour {
 	public void Chase()
 	{		
 		components.agent.speed = chasing.chaseSpeed * Time.deltaTime;
-//		if(components.mySight.playerSighted)
-//		{
-//			chasing.rotDir = components.mySight.player.position - transform.position;
-//			chasing.rotDir.Normalize();
-//			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(chasing.rotDir), chasing.chaseSpeed * Time.deltaTime);
-//		}
 		if(Vector3.Distance(components.mySight.player.position,this.transform.position) >= chasing.maxDistance)
 		{
 			components.agent.SetDestination(components.mySight.player.position);
@@ -151,6 +147,12 @@ public class minionAI : MonoBehaviour {
 		chasing.rotDir = components.mySight.player.position - transform.position;
 		chasing.rotDir.Normalize();
 		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(chasing.rotDir), chasing.chaseSpeed * Time.deltaTime);
+		if(Vector3.Distance(components.mySight.player.position, this.transform.position) >= chasing.maxDistance)
+		{
+			components.myAnim.SetBool("attack", false);
+			components.myAnim.SetBool("walkForward", true);
+			state = minionAI.State.CHASE;
+		}
 	}
 
 	public void Death()
@@ -158,6 +160,16 @@ public class minionAI : MonoBehaviour {
 		components.myAnim.SetBool("walkForward", false);
 		components.myAnim.SetBool("attack", false);
 		components.myAnim.SetBool("dead", true);
+//		components.myLook.enabled = false;
+		components.mycontroller.enabled = false;
+		components.myData.enabled = false;
+		components.mySight.enabled = false;
+	}
+
+	public void RemoveMinion()
+	{
+		Instantiate(components.myExplosion,this.transform.position, this.transform.rotation);
+		Destroy(this.gameObject);
 	}
 
 	void OnTriggerEnter(Collider coll)
