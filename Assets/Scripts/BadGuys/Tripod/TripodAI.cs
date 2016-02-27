@@ -12,6 +12,7 @@ public class TripodAI : MonoBehaviour {
 		public Animator myAnim;
 		// This variable will store a reference to our sight script
 		public TripodSight mySight;
+		public TripodLook myLook;
 		// This variable will store a reference to our Character Controller
 		public CharacterController mycontroller;
 		// Reference to Enemy Data Script
@@ -56,7 +57,6 @@ public class TripodAI : MonoBehaviour {
 	{
 		public bool chase;
 		public float chaseSpeed;
-		public float minDistance;
 		public float maxDistance;
 	}
 
@@ -172,7 +172,6 @@ public class TripodAI : MonoBehaviour {
 		if(components.mySight.playerSighted)
 		{
 			patrolling.amIOnPatrol = false;
-			components.myAnim.SetBool("shouldPatrol", false);
 			state = TripodAI.State.CHASE;
 		}
 	}
@@ -183,10 +182,14 @@ public class TripodAI : MonoBehaviour {
 		components.agent.speed = chasing.chaseSpeed;
 		if(Vector3.Distance(this.transform.position,components.mySight.player.position) <= chasing.maxDistance)
 		{
-//			state = TripodAI.State.ATTACK;
+			state = TripodAI.State.ATTACK;
 		}
 		else if(Vector3.Distance(this.transform.position,components.mySight.player.position) >= chasing.maxDistance)
 		{
+			if(!components.myAnim.GetBool("shouldPatrol"))
+			{
+				components.myAnim.SetBool("shouldPatrol", true);
+			}
 			components.agent.SetDestination(components.mySight.player.position);
 			components.mycontroller.Move(components.agent.desiredVelocity);
 		}
@@ -196,21 +199,16 @@ public class TripodAI : MonoBehaviour {
 	public void Attack()
 	{
 		components.myAnim.SetBool("shouldPatrol", false);
-		Fire();
+		components.myAnim.SetBool("shouldFire", true);
+		if(Vector3.Distance(this.transform.position,components.mySight.player.position) >= chasing.maxDistance)
+		{
+			components.myAnim.SetBool("shouldFire", false);
+			state = TripodAI.State.CHASE;
+		}
 	}
 
 	// Method used to actually fire "bullets" 
 	public void Fire()
-	{
-		components.myAnim.SetBool("shouldFire", true);
-		attacking.timer += Time.deltaTime;
-		if (attacking.timer > attacking.waitShot) {
-			GameObject bulletClone = Instantiate(attacking.bullet, attacking.shotPos.position, attacking.shotPos.rotation) as GameObject;
-			attacking.timer = 0;
-		}
-	}
-
-	public void FireTwo()
 	{
 		
 	}
@@ -222,6 +220,7 @@ public class TripodAI : MonoBehaviour {
 			patrolling.amIOnPatrol = false;
 		}
 		components.myAnim.SetBool("dead", true);
+		components.myLook.enabled = false;
 		foreach(GameObject go in components.mySight.lightbeams)
 		{
 			Destroy(go);
