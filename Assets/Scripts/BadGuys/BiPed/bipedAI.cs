@@ -93,19 +93,15 @@ public class bipedAI : MonoBehaviour {
 		while(alive) {
 			switch(state) {
 			case State.IDLE:
-				Debug.Log("I am in state IDLE");
 				Idle();
 				break;
 			case State.CHASE:
-				Debug.Log("I am in state Chase");
 				Chase();
 				break;
 			case State.ATTACK:
-				Debug.Log("I am in state ATTACK");
 				Attack();
 				break;
 			case State.DEATH:
-				Debug.Log("I am Dead");
 				Death();
 				RemoveBody();
 				break;

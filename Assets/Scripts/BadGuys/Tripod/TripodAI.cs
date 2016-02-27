@@ -111,29 +111,23 @@ public class TripodAI : MonoBehaviour {
 			{
 			case State.IDLE:				
 				Idle();
-				Debug.Log("I am in state: " + state);
 				break;
 			case State.PATROL:
 				Patrol ();
-				Debug.Log("I am in state: " + state);
 				break;
 			case State.CHASE:
 				Chase ();
-				Debug.Log("I am in state: " + state);
 				break;
 			case State.ATTACK:
 				Attack ();
-				Debug.Log("I am in state: " + state);
 				break;
 			case State.SPAWN:				
 				ReleaseMinions ();
-				Debug.Log("I am in state: " + state);
 				break;
 			case State.DEATH:
 				Death ();
 				yield return new WaitForSeconds(5);
 				RemoveTripod();
-				Debug.Log("I am in state: " + state);
 				break;
 			}
 			yield return null;
@@ -258,6 +252,7 @@ public class TripodAI : MonoBehaviour {
 			if(spawning.minionsSpawned >= spawning.maxMinions)
 			{
 				state = TripodAI.State.IDLE;
+				spawning.maxMinions = 0;
 			}
 		}
 	}
