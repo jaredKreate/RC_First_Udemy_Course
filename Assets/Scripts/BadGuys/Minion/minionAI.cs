@@ -116,6 +116,7 @@ public class minionAI : MonoBehaviour {
 	{
 		if(!components.mySight.playerSighted)
 		{			
+			components.myAnim.SetBool("walkForward", true);
 			components.mycontroller.SimpleMove(transform.forward * idling.idleSpeed);
 			if (components.mySight.playerSighted) {
 				state = minionAI.State.CHASE;
@@ -147,6 +148,9 @@ public class minionAI : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-	
+		if(!components.myData.alive)
+		{
+			state = minionAI.State.DEATH;
+		}
 	}
 }
