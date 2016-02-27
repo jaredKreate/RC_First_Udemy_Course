@@ -138,9 +138,9 @@ public class minionAI : MonoBehaviour {
 		
 	}
 
-	void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider coll)
 	{
-		if(other.gameObject.tag == "Player");
+		if(coll.gameObject.tag == "Player")
 		{
 			components.mySight.playerSighted = true;
 		}
