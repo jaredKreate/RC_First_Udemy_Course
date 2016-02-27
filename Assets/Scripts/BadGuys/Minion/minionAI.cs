@@ -126,8 +126,8 @@ public class minionAI : MonoBehaviour {
 	}
 
 	public void Chase()
-	{
-		components.agent.speed = chasing.chaseSpeed;
+	{		
+		components.agent.speed = chasing.chaseSpeed * Time.deltaTime;
 //		if(components.mySight.playerSighted)
 //		{
 //			chasing.rotDir = components.mySight.player.position - transform.position;
