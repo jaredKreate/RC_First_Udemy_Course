@@ -79,7 +79,7 @@ public class TripodAI : MonoBehaviour {
 	{
 		public GameObject minion;
 		public int maxMinions;
-		public Transform spawnLocation;
+		public Transform[] spawnLocations;
 		public int minionsSpawned;
 	}
 
@@ -127,7 +127,6 @@ public class TripodAI : MonoBehaviour {
 				break;
 			case State.SPAWN:				
 				ReleaseMinions ();
-				yield return new WaitForSeconds(1);
 				Debug.Log("I am in state: " + state);
 				break;
 			case State.DEATH:
@@ -251,14 +250,15 @@ public class TripodAI : MonoBehaviour {
 	void ReleaseMinions()
 	{
 		components.myAnim.SetBool("shouldPatrol", false);
-		spawning.minionsSpawned += 1;
-		if(spawning.minionsSpawned <= spawning.maxMinions)
+		foreach(Transform t in spawning.spawnLocations)
 		{
-			Instantiate(spawning.minion, spawning.spawnLocation.position, this.transform.rotation);
-		}
-		else
-		{
-			state = TripodAI.State.IDLE;
+			Instantiate(components.myExplosion,t.transform.position,t.transform.rotation);
+			Instantiate(spawning.minion,t.transform.position,t.transform.rotation);
+			spawning.minionsSpawned += 1;
+			if(spawning.minionsSpawned >= spawning.maxMinions)
+			{
+				state = TripodAI.State.IDLE;
+			}
 		}
 	}
 
