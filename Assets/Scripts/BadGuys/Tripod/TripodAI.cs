@@ -35,8 +35,6 @@ public class TripodAI : MonoBehaviour {
 
 	// We need this variable in order to change the current state of the AI
 	public State state;
-	// We need this variable to indicate whether the AI unit is currently alive or not
-	private bool alive;
 
 	// We will need these if the AI needs to be patrolling
 	[System.Serializable]
@@ -97,7 +95,6 @@ public class TripodAI : MonoBehaviour {
 		components.myData = GetComponent<EnemyData>();
 //		patrolling.waypointInd = Random.Range(0,patrolling.waypoints.Length);
 		patrolling.waypointInd = 3;
-		alive = true;
 		state = TripodAI.State.IDLE;
 		StartCoroutine("FSM");
 	}
@@ -105,12 +102,11 @@ public class TripodAI : MonoBehaviour {
 	// This is our Finite State machine which will run continuously until the AI character has been eliminated
 	IEnumerator FSM()
 	{
-		while (alive)
+		while (components.myData.alive)
 		{
 			switch (state)
 			{
-			case State.IDLE:
-				yield return new WaitForSeconds(5);
+			case State.IDLE:				
 				Idle();
 				Debug.Log("I am in state: " + state);
 				break;
@@ -195,24 +191,26 @@ public class TripodAI : MonoBehaviour {
 		{
 			state = TripodAI.State.IDLE;
 		}
+		Debug.Log("Chase Method Called");
 	}
 
 	// Main Attack Method
 	public void Attack()
 	{
+		Debug.Log("Attack Method Called");
 		components.myAnim.SetBool("shouldPatrol", false);
-		Fire();
-	}
-
-	// Method used to actually fire "bullets" 
-	public void Fire()
-	{
 		components.myAnim.SetBool("shouldFire", true);
 		attacking.timer += Time.deltaTime;
 		if (attacking.timer > attacking.waitShot) {
 			GameObject bulletClone = Instantiate(attacking.bullet, attacking.shotPos.position, attacking.shotPos.rotation) as GameObject;
 			attacking.timer = 0;
 		}
+	}
+
+	// Method used to actually fire "bullets" 
+	public void Fire()
+	{
+		
 	}
 
 	public void FireTwo()
