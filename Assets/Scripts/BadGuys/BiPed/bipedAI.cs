@@ -18,7 +18,7 @@ public class bipedAI : MonoBehaviour {
 		public EnemyData myData;
 		//Reference to Trigger Collider
 		public Collider myTrigger;
-		public GameObject myExplosion;
+		public GameObject myRagdoll;
 	}
 
 	public Components components;
@@ -107,8 +107,7 @@ public class bipedAI : MonoBehaviour {
 			case State.DEATH:
 				Debug.Log("I am Dead");
 				Death();
-				yield return new WaitForSeconds(3);
-				RemoveMinion();
+				RemoveBody();
 				break;
 			}
 			yield return null;
@@ -166,9 +165,9 @@ public class bipedAI : MonoBehaviour {
 		components.mySight.enabled = false;
 	}
 
-	public void RemoveMinion()
+	public void RemoveBody()
 	{
-		Instantiate(components.myExplosion,this.transform.position, this.transform.rotation);
+		Instantiate(components.myRagdoll,this.transform.position, this.transform.rotation);
 		Destroy(this.gameObject);
 	}
 
